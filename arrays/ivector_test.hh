@@ -21,6 +21,7 @@ namespace img {
 
             void test_find();
             void test_resize();
+            void test_shrink();
     };
 }
 
