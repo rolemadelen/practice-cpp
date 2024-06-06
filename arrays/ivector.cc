@@ -1,8 +1,12 @@
 #include "ivector.hh"
 
 namespace img {
-    // IVector::IVector() {}
-    // IVector::~IVector() {}
+    IVector::IVector() {
+        if (capacity != minimum_capacity) {
+            capacity = minimum_capacity;
+            vec = std::make_unique<int[]>(capacity);
+        }
+    }
     
     int IVector::get_size() { return size; }
     int IVector::get_capacity() { return capacity; }
@@ -35,7 +39,6 @@ namespace img {
     }
 
     void IVector::insert(int index, int item) {
-        std::cout << size << std::endl;
         if(index == size) {
             push_back(item);
         }

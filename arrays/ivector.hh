@@ -7,7 +7,7 @@ namespace img {
 
     class IVector {
         public:
-            IVector() = default;
+            IVector();
             ~IVector() = default;
 
             int get_size();
