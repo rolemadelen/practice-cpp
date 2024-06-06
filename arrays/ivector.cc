@@ -15,14 +15,14 @@ namespace img {
         return vec[index];
     }
 
-    void IVector::push_back(int item){
+    void IVector::push_back(int item) {
         if (size == capacity) {
             resize(capacity * growth_factor);
         }
         vec[size++] = item;
     }
 
-    void IVector::push_front(int item){
+    void IVector::push_front(int item) {
         if (size == capacity) {
             resize(capacity * growth_factor);
         }
@@ -34,7 +34,8 @@ namespace img {
         ++size;
     }
 
-    void IVector::insert(int index, int item){
+    void IVector::insert(int index, int item) {
+        std::cout << size << std::endl;
         if(index == size) {
             push_back(item);
         }
@@ -48,35 +49,79 @@ namespace img {
             vec[index] = item;
             ++size;
         }
-        return;
     }
 
 
-    void IVector::remove_all(int item){
-        return;
+    void IVector::remove_all(int item) {
+        for(int i=0; i<size; ++i) {
+            if(vec[i] == item) {
+                remove_at(i);
+            }
+        }
     }
 
-    void IVector::remove_at(int index){
-        return;
+    void IVector::remove_at(int index) {
+        if (index < 0 || index >= size) {
+            throw std::out_of_range("Index out of range");
+        }
+
+        if (size == capacity / shrink_factor) {
+            resize(capacity >> 1);
+        }
+
+        for(int i=index; i<size-1; ++i) {
+            vec[i] = vec[i+1];
+        }
+        --size;
     }
 
     int IVector::pop_back() {
         if (size == 0) {
             throw std::out_of_range("Vector is empty");
         }
-        return vec[--size];
+        
+        int ret = vec[--size];
+        if(size == capacity / shrink_factor) {
+            resize(capacity >> 1);
+        }
+
+        return ret;
     }
 
-    int IVector::pop_front(){
-        return 0;
+    int IVector::pop_front() {
+        if (size == 0) {
+            throw std::out_of_range("Vector is empty");
+        }
+
+        if(size == capacity / shrink_factor) {
+            resize(capacity >> 1);
+        }
+
+        int ret = vec[0];
+        for(int i=0; i<size-1; ++i) {
+            vec[i] = vec[i+1];
+        }
+        --size;
+        return ret;
     }
 
     int IVector::find(int item){
-        return 0;
+        for(int i=0; i<size; ++i) {
+            if (vec[i] == item) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     void IVector::resize(int new_capacity) {
-        return;
+        std::unique_ptr<int[]> new_vec(new int[new_capacity]);
+        for(int i=0; i<size; ++i) {
+            new_vec[i] = vec[i];
+        }
+        vec = std::move(new_vec);
+        capacity = new_capacity;
     }
 }
 
